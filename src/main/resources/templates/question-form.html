@@ -1,0 +1,45 @@
+<!-- question-form.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Questions to Assignment</title>
+    <style>
+        .form-group { margin-bottom: 15px; }
+        label { display: block; font-weight: bold; margin-bottom: 5px; }
+        input[type="text"], textarea { width: 100%; padding: 8px; }
+        .option-row { display: flex; align-items: center; margin-bottom: 10px; }
+        .option-row input[type="text"] { flex: 1; margin-right: 10px; }
+    </style>
+</head>
+<body>
+    <h2>Add Question to Assignment</h2>
+    <form th:action="@{'/admin/assignments/' + ${assignmentId} + '/questions/save'}" method="post">
+        <div class="form-group">
+            <label>Question Text</label>
+            <textarea name="questionText" rows="3" required></textarea>
+        </div>
+        <div class="form-group">
+            <label>Answer Options</label>
+            <div class="option-row">
+                <input type="text" name="options" placeholder="Option 1" required>
+                <input type="radio" name="correctIndex" value="0" required> Correct
+            </div>
+            <div class="option-row">
+                <input type="text" name="options" placeholder="Option 2" required>
+                <input type="radio" name="correctIndex" value="1"> Correct
+            </div>
+            <div class="option-row">
+                <input type="text" name="options" placeholder="Option 3" required>
+                <input type="radio" name="correctIndex" value="2"> Correct
+            </div>
+            <div class="option-row">
+                <input type="text" name="options" placeholder="Option 4" required>
+                <input type="radio" name="correctIndex" value="3"> Correct
+            </div>
+        </div>
+        <button type="submit">Add Question</button>
+        <a th:href="@{'/admin/assignments/' + ${assignmentId} + '/preview'}">Finish</a>
+    </form>
+</body>
+</html>

@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(to right, #f3e7ff, #fdf0ff);
+            min-height: 100vh;
+            padding-top: 90px;
+        }
+
+        .head {
+            background-color: #a64ac9;
+            height: 70px;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .head h1 {
+            color: white;
+            font-size: 1.6rem;
+        }
+
+        .head a {
+            position: absolute;
+            left: 20px;
+            bottom: 10px;
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+        }
+
+        .head .logout-btn {
+            position: absolute;
+            right: 20px;
+            bottom: 10px;
+            background-color: #ff4d4d;
+            color: white;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .head .logout-btn:hover {
+            background-color: #cc0000;
+        }
+
+        .dashboard {
+            padding: 30px 20px;
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        .welcome {
+            font-size: 26px;
+            text-align: center;
+            margin-bottom: 30px;
+            color: #333;
+        }
+
+        .stats-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(5px);
+            border-radius: 10px;
+            padding: 20px 30px;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+            text-align: center;
+            min-width: 180px;
+        }
+
+        .stat-card div:first-child {
+            font-weight: 600;
+            color: #555;
+        }
+
+        .stat-value {
+            font-size: 28px;
+            color: #222;
+            margin-top: 5px;
+        }
+
+        .options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 25px;
+        }
+
+        .option {
+            display: block;
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            text-decoration: none;
+            color: #333;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+        }
+
+        .option:hover {
+            background-color: #f5f5f5;
+            transform: translateY(-4px);
+        }
+
+        .option h3 {
+            margin-bottom: 10px;
+            color: #a64ac9;
+        }
+
+        .option p {
+            font-size: 0.9rem;
+            color: #555;
+        }
+
+        @media (max-width: 600px) {
+            .welcome {
+                font-size: 22px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="head">
+        <h1>Student Portal - Admin Dashboard</h1>
+        <form th:action="@{/logout}" method="post" style="display: inline;">
+            <button type="submit" class="logout-btn">Logout</button>
+        </form>
+    </div>
+
+    <div class="dashboard">
+        <div class="welcome">
+            Welcome, <span th:text="${admin.adminName}">Admin</span>!
+        </div>
+
+        <div class="stats-container">
+            <div class="stat-card">
+                <div>Total Courses</div>
+                <div class="stat-value" th:text="${courseCount}">0</div>
+            </div>
+            <div class="stat-card">
+                <div>Total Students</div>
+                <div class="stat-value" th:text="${studentCount}">0</div>
+            </div>
+        </div>
+
+        <div class="options">
+            <a th:href="@{/admin/students}" class="option">
+                <h3>Manage Students</h3>
+                <p>View, edit, and manage student accounts</p>
+            </a>
+            <a th:href="@{/admin/courses}" class="option">
+                <h3>Manage Courses</h3>
+                <p>Create and manage courses with ease</p>
+            </a>
+        </div>
+    </div>
+
+</body>
+</html>

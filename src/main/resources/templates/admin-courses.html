@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Courses</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            padding-top: 90px;
+        }
+
+        .head {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: #6f42c1;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            z-index: 999;
+        }
+
+        .head a {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            background: rgba(255,255,255,0.1);
+            padding: 6px 12px;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+
+        .head a:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 20px;
+        }
+
+        .btn {
+            padding: 10px 18px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            text-decoration: none;
+            display: inline-block;
+            margin-right: 10px;
+            margin-top: 10px;
+            transition: background-color 0.3s;
+        }
+
+        .btn-primary {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #218838;
+        }
+
+        .btn-secondary {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: #0069d9;
+        }
+
+        .btn-view {
+            background-color: #6c757d;
+            color: white;
+        }
+
+        .btn-view:hover {
+            background-color: #5a6268;
+        }
+
+        .course-list {
+            margin-top: 30px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .course-card {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+            padding: 20px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .course-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.12);
+        }
+
+        .course-card h3 {
+            margin-bottom: 10px;
+            font-size: 20px;
+            color: #343a40;
+        }
+
+        .course-card p {
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 15px;
+        }
+
+        .btn-group {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .no-courses {
+            text-align: center;
+            padding: 40px 0;
+            color: #999;
+            font-size: 18px;
+        }
+
+        @media (max-width: 768px) {
+            .head h1 {
+                font-size: 20px;
+            }
+
+            .course-card {
+                padding: 15px;
+            }
+
+            .btn {
+                font-size: 13px;
+                padding: 8px 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="head">
+        <a th:href="@{/admin/dashboard}">← Dashboard</a>
+        <h1>Manage Courses</h1>
+    </div>
+
+    <div class="container">
+        <a th:href="@{/admin/courses/new}" class="btn btn-primary">+ Create New Course</a>
+
+        <div class="course-list">
+            <div th:each="course : ${courses}" class="course-card">
+                <h3 th:text="${course.courseName}">Course Name</h3>
+                <p th:text="${course.description}">Course description goes here...</p>
+
+                <div class="btn-group">
+                    <a th:href="@{'/admin/courses/' + ${course.id} + '/assignments'}"
+                       class="btn btn-secondary">Assignments</a>
+
+                    <a th:href="@{'/admin/courses/' + ${course.id} + '/assignments/new'}"
+                       class="btn btn-primary">+ Add Assignment</a>
+
+                    <a th:href="@{'/admin/courses/' + ${course.id} + '/students'}"
+                       class="btn btn-view">View Students</a>
+                </div>
+            </div>
+
+            <div th:if="${#lists.isEmpty(courses)}" class="no-courses">
+                <p>No courses found. Create your first course!</p>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

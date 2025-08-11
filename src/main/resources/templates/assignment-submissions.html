@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Submissions</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            margin: 0;
+            padding: 20px;
+            background-color: #f9fafc;
+            color: #333;
+        }
+
+        h1 {
+            text-align: center;
+            color: #4a4a4a;
+            font-size: 28px;
+            margin-bottom: 30px;
+        }
+
+        .table-container {
+            max-width: 1000px;
+            margin: auto;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            overflow-x: auto;
+            padding: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0 auto;
+        }
+
+        th, td {
+            padding: 14px 16px;
+            text-align: center;
+            border-bottom: 1px solid #e0e0e0;
+            word-break: break-word;
+        }
+
+        th {
+            background-color: #eef1f5;
+            color: #333;
+            font-weight: 600;
+        }
+
+        tbody tr:hover {
+            background-color: #f7f9fb;
+        }
+
+        .pass {
+            color: #28a745;
+            font-weight: bold;
+        }
+
+        .fail {
+            color: #dc3545;
+            font-weight: bold;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin: 30px auto 0;
+            padding: 10px 20px;
+            background-color: #6c63ff;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: background 0.3s ease;
+            text-align: center;
+        }
+
+        .back-link:hover {
+            background-color: #574ed8;
+        }
+
+        @media (max-width: 768px) {
+            th, td {
+                font-size: 14px;
+                padding: 10px;
+            }
+
+            h1 {
+                font-size: 22px;
+            }
+
+            .table-container {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1 th:text="'Submissions for: ' + ${assignment.assignmentTitle}">Submissions</h1>
+
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Student</th>
+                    <th>Student Answer</th>
+                    <th>Correct Answer</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="submission : ${submissions}">
+                    <td th:text="${submission.student.studentName}"></td>
+                    <td th:text="${submission.answer}"></td>
+                    <td th:text="${assignment.correctAnswer}"></td>
+                    <td>
+                        <span th:if="${submission.answer == assignment.correctAnswer}" class="pass">Pass</span>
+                        <span th:if="${submission.answer != assignment.correctAnswer}" class="fail">Fail</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div style="text-align: center;">
+        <a class="back-link" th:href="@{/admin/courses}">← Back to Courses</a>
+    </div>
+</body>
+</html>

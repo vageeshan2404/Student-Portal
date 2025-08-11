@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Assignment</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: #f5f7fa;
+            padding: 0;
+            margin: 0;
+        }
+
+		.head {
+		          background: linear-gradient(135deg, #d66efd, #a54ff2);
+		          color: white;
+		          height: 80px;
+		          display: flex;
+		          align-items: center;
+		          justify-content: center;
+		          position: relative;
+		          box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+		      }
+
+		      .head h1 {
+		          font-size: 22px;
+		          font-weight: 600;
+		      }
+
+		      .head a {
+		          position: absolute;
+		          left: 20px;
+		          bottom: 16px;
+		          color: white;
+		          text-decoration: none;
+		          font-weight: bold;
+		          padding: 6px 12px;
+		          background: rgba(255,255,255,0.15);
+		          border-radius: 5px;
+		          transition: background 0.3s;
+		      }
+
+		      .head a:hover {
+		          background: rgba(255,255,255,0.3);
+		      }
+
+        form {
+            max-width: 720px;
+            margin: 40px auto;
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            transition: 0.3s border;
+        }
+
+        input[type="text"]:focus,
+        textarea:focus {
+            border-color: #7a42f4;
+            outline: none;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .answer-option {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .answer-option input[type="text"] {
+            flex: 1;
+            min-width: 200px;
+            margin-right: 10px;
+        }
+
+        .answer-option input[type="radio"] {
+            margin-right: 5px;
+        }
+
+        .answer-option label {
+            font-weight: normal;
+            color: #555;
+            margin-top: 5px;
+        }
+
+        button[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 24px;
+            font-size: 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #43a047;
+        }
+
+        @media (max-width: 600px) {
+            form {
+                padding: 20px;
+                margin: 30px 15px;
+            }
+
+            .answer-option {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .answer-option input[type="text"] {
+                margin-right: 0;
+                width: 100%;
+                margin-bottom: 5px;
+            }
+
+            .head a {
+                position: static;
+                display: block;
+                margin-bottom: 10px;
+                text-align: left;
+            }
+
+            .head h1 {
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="head">
+        <a th:href="@{'/admin/courses'}">← Back to Courses</a>
+        <h1 >Create Assignments</h1>
+    </div>
+
+    <form th:action="@{'/admin/courses/' + ${assignment.course.id} + '/assignments/save'}" method="post">
+        <div class="form-group">
+            <label for="assignmentTitle">Assignment Title</label>
+            <input type="text" id="assignmentTitle" name="assignmentTitle" required>
+        </div>
+
+        <div class="form-group">
+            <label for="question">Question</label>
+            <textarea id="question" name="question" rows="5" required></textarea>
+        </div>
+
+        <div class="form-group">
+            <label>Answer Options</label>
+
+            <div class="answer-option">
+                <input type="text" name="optionTexts" placeholder="Option 1" required>
+                <input type="radio" name="correctAnswerIndex" value="0" required>
+                <label>Correct</label>
+            </div>
+
+            <div class="answer-option">
+                <input type="text" name="optionTexts" placeholder="Option 2" required>
+                <input type="radio" name="correctAnswerIndex" value="1">
+                <label>Correct</label>
+            </div>
+
+            <div class="answer-option">
+                <input type="text" name="optionTexts" placeholder="Option 3" required>
+                <input type="radio" name="correctAnswerIndex" value="2">
+                <label>Correct</label>
+            </div>
+
+            <div class="answer-option">
+                <input type="text" name="optionTexts" placeholder="Option 4" required>
+                <input type="radio" name="correctAnswerIndex" value="3">
+                <label>Correct</label>
+            </div>
+        </div>
+
+        <button type="submit">✅ Create Assignment</button>
+    </form>
+
+</body>
+</html>

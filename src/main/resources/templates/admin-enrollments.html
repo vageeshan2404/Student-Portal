@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Manage Enrollments</title>
+    <style>
+        /* Add your styling here */
+        .enrollment-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .enrollment-table th, .enrollment-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        .enrollment-table th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <div class="head">
+        <h1>Manage Enrollments</h1>
+        <a th:href="@{/admin/dashboard}">Back to Dashboard</a>
+    </div>
+    
+    <table class="enrollment-table">
+        <thead>
+            <tr>
+                <th>Student</th>
+                <th>Course</th>
+                <th>Enrollment Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="enrollment : ${enrollments}">
+                <td th:text="${enrollment.student.studentName}"></td>
+                <td th:text="${enrollment.course.courseName}"></td>
+                <td th:text="${enrollment.enrollmentDate}"></td>
+                <td>
+                    <a th:href="@{'/admin/enrollments/delete/' + ${enrollment.id}}">Delete</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

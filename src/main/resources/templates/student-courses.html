@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Student Courses</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f0f2f5;
+      margin: 0;
+      padding-top: 80px;
+      color: #333;
+    }
+
+    .header {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      height: 70px;
+      background: linear-gradient(to right, #6a11cb, #2575fc);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .header h1 {
+      color: white;
+      font-size: 22px;
+      font-weight: 600;
+      margin: 0;
+    }
+
+    .header .back-link {
+      position: absolute;
+      left: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #fff;
+      font-size: 14px;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .header .back-link:hover {
+      text-decoration: underline;
+    }
+
+    .dashboard-container {
+      padding: 30px 20px;
+      max-width: 500px;
+      margin: auto;
+    }
+
+    .section-title {
+      font-size: 26px;
+      font-weight: 600;
+      margin: 2rem 0 1.2rem;
+      color: #333;
+      border-bottom: 2px solid #ddd;
+      padding-bottom: 8px;
+    }
+
+    .courses-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 20px;
+    }
+
+    .course-card {
+      background: #fff;
+      border-radius: 14px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+      padding: 20px;
+      transition: transform 0.3s, box-shadow 0.3s;
+
+	  margin-top: 9px;
+    }
+
+    .course-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+    }
+
+    .course-name {
+      font-size: 20px;
+      font-weight: 600;
+      color: #1a1a1a;
+      margin-bottom: 10px;
+    }
+
+    .course-description {
+      font-size: 14px;
+      color: #666;
+      margin-bottom: 15px;
+      min-height: 50px;
+    }
+
+    .enrollment-date {
+      font-size: 12px;
+      color: #999;
+      margin-bottom: 15px;
+    }
+
+    .course-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .btn {
+      border: none;
+      border-radius: 6px;
+      font-weight: 500;
+      padding: 8px 16px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .btn-enroll {
+      background-color: #2575fc;
+      color: white;
+    }
+
+    .btn-enroll:hover {
+      background-color: #1a4fbd;
+    }
+
+    .btn-assignments {
+      background-color: #6a11cb;
+      color: white;
+    }
+
+    .btn-assignments:hover {
+      background-color: #5511a8;
+    }
+
+    .btn-edit {
+      background-color: #28a745;
+      color: white;
+    }
+
+    .btn-edit:hover {
+      background-color: #1e7e34;
+    }
+
+    .btn-delete {
+      background-color: #dc3545;
+      color: white;
+    }
+
+    .btn-delete:hover {
+      background-color: #bd2130;
+    }
+
+    .empty-message {
+      text-align: center;
+      color: #888;
+      font-style: italic;
+      grid-column: 1 / -1;
+      padding: 30px;
+    }
+
+    @media (max-width: 576px) {
+      .section-title {
+        font-size: 20px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="header">
+    <a th:href="@{/student/dashboard}" class="back-link">← Back to Dashboard</a>
+    <h1>Course Management</h1>
+  </header>
+
+  <div class="dashboard-container">
+
+    <!-- Flash messages -->
+    <div th:if="${#strings.length(#messages.msg('success')) > 0}" role="alert"></div>
+    <div th:if="${#strings.length(#messages.msg('error')) > 0}" role="alert"></div>
+
+    <!-- Available Courses -->
+    <h2 class="section-title">Available Courses</h2>
+    <div class="courses-grid">
+      <div th:if="${allCourses != null and !allCourses.isEmpty()}">
+        <div th:each="course : ${allCourses}" class="course-card">
+          <h3 class="course-name" th:text="${course.courseName}"></h3>
+          <p class="course-description" th:text="${course.description}"></p>
+          <div class="course-actions">
+            <form th:action="@{/student/courses/enroll}" method="post">
+              <input type="hidden" name="courseId" th:value="${course.id}" />
+              <button type="submit" class="btn btn-enroll">Enroll</button>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div th:if="${allCourses == null or allCourses.isEmpty()}" class="empty-message">
+        <p>No available courses at this time.</p>
+      </div>
+    </div>
+
+    <!-- Enrolled Courses -->
+    <h2 class="section-title">Your Enrolled Courses</h2>
+    <div class="courses-grid">
+      <div th:if="${enrolledCourses != null and !enrolledCourses.isEmpty()}">
+        <div th:each="enrollment : ${enrolledCourses}" class="course-card">
+          <h3 class="course-name" th:text="${enrollment.course.courseName}"></h3>
+          <p class="course-description" th:text="${enrollment.course.description}"></p>
+          <div class="course-actions">
+            <a th:href="@{'/student/courses/' + ${enrollment.course.id} + '/assignments'}" class="btn btn-assignments">View Assignments</a>
+            <form th:action="@{'/student/courses/' + ${enrollment.id} + '/unenroll'}" method="post" onsubmit="return confirm('Are you sure you want to unenroll from this course?');">
+              <button type="submit" class="btn btn-delete">Unenroll</button>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div th:if="${enrolledCourses == null or enrolledCourses.isEmpty()}" class="empty-message">
+        <p>You are not enrolled in any courses yet.</p>
+        <a th:href="@{/student/courses}" class="btn btn-enroll">Browse Courses</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

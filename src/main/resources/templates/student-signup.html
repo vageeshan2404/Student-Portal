@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Student Registration</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            margin: 0;
+            background: #f1f5f9;
+            padding-top: 90px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .head {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            height: 70px;
+            background: linear-gradient(90deg, #a64bf4, #ed85f3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            z-index: 1000;
+        }
+
+        .head h1 {
+            color: white;
+            font-size: 24px;
+            margin: 0;
+        }
+
+        .head a {
+            position: absolute;
+            left: 20px;
+            color: white;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        h2.page-title {
+            margin-top: 30px;
+            font-size: 22px;
+            color: #333;
+        }
+
+        .form-container {
+            width: 100%;
+            max-width: 500px;
+            background: white;
+            padding: 30px 25px;
+            margin: 20px auto;
+            border-radius: 10px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-container h2 {
+            text-align: center;
+            color: #4a4a4a;
+            margin-bottom: 20px;
+        }
+
+        form label {
+            font-weight: 500;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        form input[type="text"],
+        form input[type="email"],
+        form input[type="password"],
+        form input[type="file"],
+        form select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group-inline {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .form-group-inline input {
+            margin-right: 5px;
+        }
+
+        .btn-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .btn1, .btn2 {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            color: white;
+            font-size: 15px;
+        }
+
+        .btn1 {
+            background-color: #3bb3ff;
+            margin-right: 10px;
+        }
+
+        .btn1:hover {
+            background-color: #2499d4;
+        }
+
+        .btn2 {
+            background-color: #ff4c4c;
+        }
+
+        .btn2:hover {
+            background-color: #e33c3c;
+        }
+
+        .or-text {
+            text-align: center;
+            margin: 15px 0;
+            color: #666;
+        }
+
+        .sign-in {
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .sign-in a {
+            color: #d40000;
+            text-decoration: none;
+        }
+
+        .sign-in a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 600px) {
+            .form-container {
+                padding: 20px;
+                margin: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="head">
+        <h1>Student Portal</h1>
+        <a th:href="@{/index}">← Home</a>
+    </div>
+
+    <h2 class="page-title">Welcome to the Student Portal</h2>
+
+    <div class="form-container">
+        <h2>Student Register Form</h2>
+        <form th:action="@{/index/student-signup}" th:object="${student}" method="post" enctype="multipart/form-data">
+            
+            <div class="form-group">
+                <label for="studentName">Enter Your Name:</label>
+                <input type="text" id="studentName" th:field="*{studentName}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Enter Your Email:</label>
+                <input type="email" id="email" th:field="*{email}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Enter Your Password:</label>
+                <input type="password" id="password" th:field="*{password}" required>
+            </div>
+
+            <div class="form-group">
+                <label>Enter Your Gender:</label>
+                <div class="form-group-inline">
+                    <label><input type="radio" th:field="*{gender}" value="male" required> Male</label>
+                    <label><input type="radio" th:field="*{gender}" value="female" required> Female</label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="department">Enter Your Department:</label>
+                <select th:field="*{department}" id="department">
+                    <option value="BCA">BCA</option>
+                    <option value="Bsc CS">Bsc CS</option>
+                    <option value="BE">BE</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Programming Language:</label>
+                <div class="form-group-inline" style="flex-wrap: wrap;">
+                    <label><input type="checkbox" name="programmingLanguages" value="Java"> Java</label>
+                    <label><input type="checkbox" name="programmingLanguages" value="Python"> Python</label>
+                    <label><input type="checkbox" name="programmingLanguages" value="C"> C</label>
+                    <label><input type="checkbox" name="programmingLanguages" value="AI"> AI</label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="resume">Upload Your Resume (PDF):</label>
+                <input type="file" id="resume" name="resume" accept=".pdf">
+            </div>
+
+            <div class="btn-container">
+                <button type="submit" class="btn1">Submit</button>
+                <button type="reset" class="btn2">Reset</button>
+            </div>
+        </form>
+
+        <div class="or-text">— or —</div>
+        <div class="sign-in">
+            Already have an account? <a th:href="@{/index/student}">Sign In</a>
+        </div>
+    </div>
+
+</body>
+</html>
